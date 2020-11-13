@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <messenger>
+            <label>Cammino Messenger</label>
+            <sort_order>101</sort_order>
+        </messenger>
+   </tabs>
+   <sections>
+       <messenger>
+           <label>Configurações</label>
+           <tab>messenger</tab>
+           <sort_order>666</sort_order>
+           <show_in_default>1</show_in_default>
+           <show_in_website>1</show_in_website>
+           <show_in_store>1</show_in_store>
+           <groups>
+               <messages>
+                   <label>Mensagens</label>
+                   <frontend_type>text</frontend_type>
+                   <sort_order>2</sort_order>
+                   <show_in_default>1</show_in_default>
+                   <show_in_website>1</show_in_website>
+                   <show_in_store>1</show_in_store>
+                   <fields>
+                        <message_signup>
+                            <label>Cliente - Novo cadastro</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </message_signup>
+                        <message_order_status_default>
+                            <label>Pedido - Mensagem padrão de mudança de status</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </message_order_status_default>
+                        <message_order_status_pending>
+                            <label>Pedido - Novo pedido</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </message_order_status_pending>
+                        <message_order_status_processing>
+                            <label>Pedido - Pagamento aprovado</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </message_order_status_processing>
+                        <message_order_status_complete>
+                            <label>Pedido - Enviado</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </message_order_status_complete>
+                        <message_order_status_canceled>
+                            <label>Pedido - Cancelado</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </message_order_status_canceled>
+                        <message_order_status_closed>
+                            <label>Pedido - Reembolsado</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </message_order_status_closed>
+                   </fields>
+               </messages>
+               <api_config>
+                   <label>Configurar APIs</label>
+                   <frontend_type>text</frontend_type>
+                   <sort_order>1</sort_order>
+                   <show_in_default>1</show_in_default>
+                   <show_in_website>1</show_in_website>
+                   <show_in_store>1</show_in_store>
+                   <fields>
+                        <used_api>
+                            <label>API Utilizada</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>messenger/apis</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </used_api>
+                   </fields>
+               </api_config>
+               <olah_config>
+                   <label>Olah</label>
+                   <frontend_type>text</frontend_type>
+                   <sort_order>2</sort_order>
+                   <show_in_default>1</show_in_default>
+                   <show_in_website>1</show_in_website>
+                   <show_in_store>1</show_in_store>
+                   <fields>
+                        <olah_canal_id>
+                            <label>CanalId</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </olah_canal_id>
+                        <olah_token>
+                            <label>Token</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </olah_token>
+                   </fields>
+               </olah_config>
+           </groups>
+       </messenger>
+   </sections>
+</config>

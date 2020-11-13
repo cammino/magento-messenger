@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Cammino_Messenger>
+            <version>1.0.0</version>
+        </Cammino_Messenger>
+    </modules>
+    <global>
+        <models>
+            <messenger>
+                <class>Cammino_Messenger_Model</class>
+            </messenger>
+        	 <olah>
+        		<class>Cammino_Messenger_Model_Olah</class>
+        	</olah>
+        </models>
+        <events>
+            <customer_register_success>
+                <observers>
+                    <cammino_messenger_observer>
+                        <class>Cammino_Messenger_Model_Observer</class>
+                        <method>sendGreetCustomer</method>
+                    </cammino_messenger_observer>
+                </observers>
+            </customer_register_success>
+            <sales_order_status_history_save_after>
+                <observers>
+                    <cammino_messenger_observer>
+                        <class>Cammino_Messenger_Model_Observer</class>
+                        <method>sendOrderStatusChange</method>
+                    </cammino_messenger_observer>
+                </observers>
+            </sales_order_status_history_save_after>
+        </events>
+    </global>
+</config>
