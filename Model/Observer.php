@@ -66,7 +66,7 @@
             $order = Mage::getModel('sales/order')->load($history['parent_id']);
             $message = $this->getMessage('message_order_status_' . $order->getStatus(), $history['parent_id']);
             if ($message && $api = $this->getApiClass()) {
-                $api->sendMessage($message, Mage::getModel('customer/customer')->load($order->getCustomerId())->getPrimaryBillingAddress()->getTelephone());
+                $api->sendMessage($message, $order->getShippingAddress()->getTelephone());
             }
         }
     }
