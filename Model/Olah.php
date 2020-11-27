@@ -25,7 +25,7 @@
         * @param string $number Phone number wich will be sent to
      */
     public function sendMessage($message, $number) {
-        $number = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $number));
+        $number = str_replace('-', '', preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $number)));
         if (count($number) <= 11) {
             $number = '55' . (string)$number;
         }
