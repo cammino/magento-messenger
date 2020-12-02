@@ -25,12 +25,34 @@
         $vars = array(
             'cliente' => Mage::getModel('customer/customer')->load($order->getCustomerId())->getName(),
             'pedido' => $order->getIncrementId(),
-            'status' => $order->getStatusLabel()
+            'status' => $order->getStatusLabel(),
+            'boleto' => self::getBoletoInfo($order)
         );
         foreach($vars as $key=>$value) {
             $message = str_replace('(' . $key . ')', $value, $message);
         }
         return $message;
+    }
+
+    /**
+     * Get billet code and url link depending on order payment method
+     * @param object $order Instance of order model
+     * @return string Concat string of billet url for print and code.
+     */
+    private static function getBoletoInfo($order) {
+        switch($order->getPayment()->getMethodInstance()->getCode()) {
+            case 'pagarme_boleto':
+                $urlBoleto = $order->getPayment()->getPagarmeBoletoUrl();
+                $codBoleto = $order->getPayment()->getPagarmeBoletoBarcode();
+            break;
+        }
+        if ($urlBoleto) {
+            $info = 'Imprimir boleto: ' . $urlBoleto;
+        }
+        if ($codBoleto) {
+            $info = $info . '\nCódigo boleto: ' . $codBoleto;
+        }
+        return $info;
     }
 
     /**
