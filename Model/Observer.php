@@ -84,9 +84,14 @@
      */
     public function sendOrderStatusChange($observer) {
         $history = $observer->getEvent()->getStatusHistory()->getData();
-        if ((empty(Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll('select * from sales_flat_order_status_history where parent_id = ' . $history['parent_id'] .' and entity_id > "' . $history['entity_id'] . '";'))) && ($history['created_at'] == $history['updated_at']) && (count(Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll('select * from sales_flat_order_status_history where parent_id = ' . $history['parent_id'] .' and status = "' . $history['status'] . '";')) == 1)) {
-            $order = Mage::getModel('sales/order')->load($history['parent_id']);
-            $message = $this->getMessage('message_order_status_' . $order->getStatus(), $history['parent_id']);
+        $orderId = $history['parent_id'];
+        $status = $history['status'];
+        if ((empty(Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll('select * from sales_flat_order_status_history where parent_id = ' . $orderId .' and entity_id > "' . $history['entity_id'] . '";'))) && ($history['created_at'] == $history['updated_at']) && (count(Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll('select * from sales_flat_order_status_history where parent_id = ' . $orderId .' and status = "' . $status . '";')) == 1)) {
+            $order = Mage::getModel('sales/order')->load($orderId);
+            $message = $this->getMessage('message_order_status_' . $status, $orderId);
+            // -- customize message (by overwrites on custom model)
+                $custom = new Cammino_Messenger_Model_Custom();
+                $message = $custom->customizeMessage($message, $history);            
             if ($message && $api = $this->getApiClass()) {
                 $api->sendMessage($message, $order->getShippingAddress()->getTelephone());
             }
