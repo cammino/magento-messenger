@@ -90,8 +90,8 @@
             $order = Mage::getModel('sales/order')->load($orderId);
             $message = $this->getMessage('message_order_status_' . $status, $orderId);
             // -- customize message (by overwrites on custom model)
-                $custom = new Cammino_Messenger_Model_Custom();
-                $message = $custom->customizeMessage($message, $history);            
+                $custom = Mage::getModel('messenger/custom');
+                $message = $custom->customizeMessage($message, $history);
             if ($message && $api = $this->getApiClass()) {
                 $api->sendMessage($message, $order->getShippingAddress()->getTelephone());
             }
