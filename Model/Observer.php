@@ -6,10 +6,10 @@
      * @param integer $orderId Default is null. If not null and there was no message found on configuration for the $fieldName passed, it's assumed to be a status change that will send the configured default message.
      * @return string
      */
-    private static function getMessage($fieldName, $orderId = null) {
+    private static function getMessage($fieldName, $orderId = null, $status = null) {
         $message = Mage::getStoreConfig('messenger/messages/' . $fieldName);
         if ($orderId) {
-            $message = self::replaceVars($message ? $message : Mage::getStoreConfig('messenger/messages/message_order_status_default'), $orderId);
+            $message = self::replaceVars($message ? $message : Mage::getStoreConfig('messenger/messages/message_order_status_default'), $orderId, $status);
         }
         return $message;
     }
@@ -20,12 +20,12 @@
      * @param integer $orderId Entity ID of the order that is being altered
      * @return string Formatted message
      */
-    private static function replaceVars($message, $orderId) {
+    private static function replaceVars($message, $orderId, $status) {
         $order = Mage::getModel('sales/order')->load($orderId);
         $vars = array(
             'cliente' => Mage::getModel('customer/customer')->load($order->getCustomerId())->getName(),
             'pedido' => $order->getIncrementId(),
-            'status' => $order->getStatusLabel(),
+            'status' => Mage::getModel('sales/order_status')->load($status)->getLabel(),
             'boleto' => self::getBoletoInfo($order)
         );
         foreach($vars as $key=>$value) {
@@ -88,7 +88,7 @@
         $status = $history['status'];
         if ((empty(Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll('select * from sales_flat_order_status_history where parent_id = ' . $orderId .' and entity_id > "' . $history['entity_id'] . '";'))) && ($history['created_at'] == $history['updated_at']) && (count(Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll('select * from sales_flat_order_status_history where parent_id = ' . $orderId .' and status = "' . $status . '";')) == 1)) {
             $order = Mage::getModel('sales/order')->load($orderId);
-            $message = $this->getMessage('message_order_status_' . $status, $orderId);
+            $message = $this->getMessage('message_order_status_' . $status, $orderId, $status);
             // -- customize message (by overwrites on custom model)
                 $custom = Mage::getModel('messenger/custom');
                 $message = $custom->customizeMessage($message, $history);
