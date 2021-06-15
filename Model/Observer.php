@@ -45,6 +45,14 @@
                 $urlBoleto = $order->getPayment()->getPagarmeBoletoUrl();
                 $codBoleto = $order->getPayment()->getPagarmeBoletoBarcode();
             break;
+            case 'paymentmodule_boleto':
+                foreach ($order->getPayment()->getAdditionalInformation('mundipagg_payment_module_charges') as $key => $charge) {
+                    if (!empty($charge['last_transaction']['url'])) {
+                        $urlBoleto = $charge['last_transaction']['url'];
+                        $codBoleto = $charge['last_transaction']['line'];
+                    }
+                }
+            break;
         }
         if ($urlBoleto) {
             $info = 'Imprimir boleto: ' . $urlBoleto;
@@ -86,8 +94,11 @@
         $history = $observer->getEvent()->getStatusHistory()->getData();
         $orderId = $history['parent_id'];
         $status = $history['status'];
-        if ((empty(Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll('select * from sales_flat_order_status_history where parent_id = ' . $orderId .' and entity_id > "' . $history['entity_id'] . '";'))) && ($history['created_at'] == $history['updated_at']) && (count(Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll('select * from sales_flat_order_status_history where parent_id = ' . $orderId .' and status = "' . $status . '";')) == 1)) {
-            $order = Mage::getModel('sales/order')->load($orderId);
+        $order = Mage::getModel('sales/order')->load($orderId);
+        if ((empty(Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll('select * from sales_flat_order_status_history where parent_id = ' . $orderId .' and entity_id > "' . $history['entity_id'] . '";'))) && ($history['created_at'] == $history['updated_at']) && ((count(Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll('select * from sales_flat_order_status_history where parent_id = ' . $orderId .' and status = "' . $status . '";')) == 1) || ($order->getPayment()->getMethodInstance()->getCode() == 'paymentmodule_boleto' && $status == 'pending'))) {
+            if (($order->getPayment()->getMethodInstance()->getCode() == 'paymentmodule_boleto' && $status == 'pending' && empty($order->getPayment()->getAdditionalInformation('mundipagg_payment_module_charges')))) {
+                return;
+            }
             $message = $this->getMessage('message_order_status_' . $status, $orderId, $status);
             // -- customize message (by overwrites on custom model)
                 $custom = Mage::getModel('messenger/custom');
