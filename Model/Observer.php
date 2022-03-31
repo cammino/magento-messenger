@@ -45,6 +45,9 @@
                 $urlBoleto = $order->getPayment()->getPagarmeBoletoUrl();
                 $codBoleto = $order->getPayment()->getPagarmeBoletoBarcode();
             break;
+            case 'pixpayment':
+                $codPix = Mage::getStoreConfig('payment/pixpayment/code');
+            break;
             case 'paymentmodule_boleto':
                 foreach ($order->getPayment()->getAdditionalInformation('mundipagg_payment_module_charges') as $key => $charge) {
                     if (!empty($charge['last_transaction']['url'])) {
@@ -59,6 +62,9 @@
         }
         if ($codBoleto) {
             $info = $info . '\nCódigo boleto: ' . $codBoleto;
+        }
+        if ($codPix) {
+            $info = 'Copie e cole o código, insira o valor do pedido e confirme a transação. Código PIX: ' . $codPix;
         }
         return $info;
     }
