@@ -86,7 +86,7 @@
      */
     public function sendGreetCustomer($observer)
     {
-        if ($message = $this->getMessage('message_signup') || $api = $this->getApiClass()) {
+        if ($message = $this->getMessage('message_signup') && $api = $this->getApiClass()) {
             return;
         }
         $customer = $observer->getEvent()->getCustomer();
