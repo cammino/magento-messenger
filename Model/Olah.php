@@ -37,7 +37,7 @@
         Mage::log($body, null, 'cammino_messenger.log');
         $authorization = "Authorization: Bearer " . $this->token;        
         curl_setopt_array($this->curl, array(
-            CURLOPT_URL => 'https://api.ihelpchat.com/api/v2/customers/send-message?sendName=false',
+            CURLOPT_URL => 'https://apiv3.ihelpchat.com/api/v2/customers/send-message?sendName=false',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => json_encode($body),
